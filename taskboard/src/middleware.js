@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
 
-const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET)
+const getSecret = () => {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is not set')
+  }
+  return new TextEncoder().encode(secret)
+}
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl
@@ -16,7 +22,8 @@ export async function middleware(request) {
     try {
       const { payload } = await jwtVerify(token, getSecret())
       user = payload
-    } catch {
+    } catch (error) {
+      console.error('[v0] JWT verification failed:', error.message)
       user = null
     }
   }
