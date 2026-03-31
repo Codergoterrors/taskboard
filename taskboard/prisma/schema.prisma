@@ -25,8 +25,9 @@ model Task {
   id          String   @id @default(cuid())
   title       String
   description String?
-  status      String   @default("todo")    // "todo" | "in-progress" | "done"
-  priority    String   @default("medium")  // "low" | "medium" | "high"
+  status      String    @default("todo")    // "todo" | "in-progress" | "done"
+  priority    String    @default("medium")  // "low" | "medium" | "high"
+  dueDate     DateTime?                     // Optional due date
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())

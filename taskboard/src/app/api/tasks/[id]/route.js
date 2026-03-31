@@ -9,8 +9,8 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 
-  const { id } = await params   // ← await added here (Next.js 15+ fix)
-  const { title, description, status, priority } = await request.json()
+  const { id } = await params  // await required for Next.js 15+
+  const { title, description, status, priority, dueDate } = await request.json()
 
   if (!title || title.trim() === '') {
     return NextResponse.json({ error: 'Task title is required.' }, { status: 400 })
@@ -27,10 +27,11 @@ export async function PUT(request, { params }) {
   const updatedTask = await prisma.task.update({
     where: { id },
     data: {
-      title: title.trim(),
+      title:       title.trim(),
       description: description?.trim() || '',
       status,
       priority,
+      dueDate:     dueDate ? new Date(dueDate) : null,
     },
   })
 
@@ -44,7 +45,7 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 
-  const { id } = await params   // ← await added here (Next.js 15+ fix)
+  const { id } = await params  // await required for Next.js 15+
 
   const existingTask = await prisma.task.findFirst({
     where: { id, userId: user.userId },

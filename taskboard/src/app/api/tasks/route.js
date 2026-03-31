@@ -24,7 +24,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 
-  const { title, description, status, priority } = await request.json()
+  const { title, description, status, priority, dueDate } = await request.json()
 
   if (!title || title.trim() === '') {
     return NextResponse.json({ error: 'Task title is required.' }, { status: 400 })
@@ -32,11 +32,12 @@ export async function POST(request) {
 
   const task = await prisma.task.create({
     data: {
-      title: title.trim(),
+      title:       title.trim(),
       description: description?.trim() || '',
-      status: status || 'todo',
-      priority: priority || 'medium',
-      userId: user.userId,
+      status:      status   || 'todo',
+      priority:    priority || 'medium',
+      dueDate:     dueDate  ? new Date(dueDate) : null,
+      userId:      user.userId,
     },
   })
 
