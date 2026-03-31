@@ -1,7 +1,13 @@
 import { SignJWT, jwtVerify } from 'jose'
 
 // Encode the secret key for use with jose
-const getSecret = () => new TextEncoder().encode(process.env.JWT_SECRET)
+const getSecret = () => {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET environment variable is not set. Please set it in your .env.local file.')
+  }
+  return new TextEncoder().encode(secret)
+}
 
 /**
  * Creates a signed JWT token with a 7-day expiry.
