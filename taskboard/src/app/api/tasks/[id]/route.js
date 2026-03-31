@@ -9,14 +9,13 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params   // ← await added here (Next.js 15+ fix)
   const { title, description, status, priority } = await request.json()
 
   if (!title || title.trim() === '') {
     return NextResponse.json({ error: 'Task title is required.' }, { status: 400 })
   }
 
-  // Verify the task belongs to this user before updating
   const existingTask = await prisma.task.findFirst({
     where: { id, userId: user.userId },
   })
@@ -45,9 +44,8 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params   // ← await added here (Next.js 15+ fix)
 
-  // Verify the task belongs to this user before deleting
   const existingTask = await prisma.task.findFirst({
     where: { id, userId: user.userId },
   })
