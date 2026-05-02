@@ -178,6 +178,4 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 👤 Author
 
-**[Your Name]** — Roll No: [Your Roll Number]
