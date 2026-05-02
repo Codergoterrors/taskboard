@@ -164,18 +164,6 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🚀 Deployment on Vercel
-
-1. Push your code to a GitHub repository
-2. Go to [vercel.com](https://vercel.com) → **Add New Project** → import your repo
-3. Under **Environment Variables**, add:
-   - `DATABASE_URL`
-   - `DIRECT_URL`
-   - `JWT_SECRET`
-4. Click **Deploy**
-
-> Prisma generates its client automatically during the Vercel build via the `postinstall` script.
-
 ---
 
 
